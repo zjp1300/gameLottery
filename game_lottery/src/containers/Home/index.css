@@ -1,0 +1,219 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+html,body{
+  overflow: hidden;
+}
+body{
+  max-width: 540px;
+  transform: translate(0);
+  margin: auto !important;
+}
+.app-container {
+  height: 100vh;
+  /*background: #f54b2c;*/
+  position: relative;
+  overflow: hidden;
+  max-width: 540px;
+}
+.activityContainerWrapper {
+  font-size: 12px;
+  background: rgb(50, 16, 124);
+  height: 100%;
+  overflow-y: scroll;
+}
+.activityContainer{
+  /* background: url('../../assets/imgs/activityBackground.png') rgb(50, 16, 124) no-repeat; */
+  background-size: 100%;
+}
+.btnTips {
+  color: #fff;
+  text-align: right;
+  margin:0 15px 15px;
+  padding-top: 15px;
+}
+
+.btnTips i {
+  vertical-align: middle;
+}
+
+.btnTips .vLine {
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 0 8px;
+}
+.disc{
+  position: relative;
+}
+.turnDisc {
+  /*width: 400px;*/
+  height: 400px;
+  /*border: 1px dashed #eee;*/
+
+}
+.discSection {
+  position: relative;
+}
+
+.discSection .disc img {
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+.turnDisc {
+  position: absolute;
+  top: 0;
+  left: 5%;
+}
+
+.mainTitle {
+  display: flex;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.btnAction {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  display: none;
+
+
+}
+
+.btnAction .btnStart {
+  width: 100%;
+  height: 100%;
+  /* background: url('../../assets/imgs/btnStart.png') 100% no-repeat; */
+  background-size: 100%;
+  border-style: none;
+  outline: none;
+  margin: -50% 0 0 -50%;
+  box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
+}
+
+.btnAction .btnStop {
+  width: 100%;
+  height: 100%;
+  /* background: url('../../assets/imgs/btnStop.png') 100% no-repeat; */
+  background-size: 100%;
+  border-style: none;
+  outline: none;
+  margin: -50% 0 0 -50%;
+  box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
+}
+
+.lableTips {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  bottom: 28px;
+  font-size: 14px;
+}
+
+.lableTips span {
+  color: #FFE346;
+}
+
+.winTips {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 60px;
+  color: #fff;
+  line-height: 30px;
+  display: block;
+  margin: 0 15px;
+  padding: 0 15px;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  width: 170px;
+
+}
+.winTips>span{
+  position: absolute;
+}
+
+.yh-modal-content {
+  background: transparent;
+}
+.popupContainer{
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+  font-size: 14px;
+  padding: 0 15px;
+}
+.popupContent{
+  position: relative;
+  height: 100%;
+}
+.popupContent>h2{
+  font-size: 16px;
+  color: #333;
+  margin: 0 0 25px;
+  padding-top: 20px;
+  text-align: center;
+}
+.popupContent>h3{
+  font-size: 14px;
+  color: #333;
+  margin: 10px 0 10px;
+}
+.popupContent>p{
+  color:rgba(102, 102, 102, 100);
+  line-height: 1.5em;
+  position: absolute;
+  bottom: 80px;
+  top: 60px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.popupContent>button{
+  font-size: 18px;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  border-radius: 100px;
+  background: linear-gradient(#FF4055,#FF1A34);
+}
+.popupContent>button:active{
+  opacity: 0.5;
+}
+.noActivity{
+  height: 100%;
+  background: #F6F6F6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.noActivity>img{
+  width: 130px;
+  height: 130px;
+}
+.noActivity>button{
+  font-size: 14px;
+  width: 100px;
+  height: 34px;
+  color: #fff;
+  border-radius: 100px;
+  background: linear-gradient(#FF4055,#FF1A34);
+}
+.noActivity>button:active{
+  opacity: 0.5;
+}
+.noActivity>p{
+ color: #999;
+ margin-bottom: 25px;
+ font-size: 14px;
+}
