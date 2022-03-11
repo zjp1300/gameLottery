@@ -158,25 +158,13 @@ const luckData = {
   },
   "now": 1639118939328
 }
-// 活动状态枚举 NOT_STARTED(0, "活动未开始"), IN_PROGRESS(1, "活动进行中"), OVER(2, "活动已结束"), TERMINATED(3, "活动终止");
-const activityStateMes = {
-  NOT_STARTED: 'NOT_STARTED',
-  IN_PROGRESS: 'IN_PROGRESS',
-  OVER: 'OVER',
-  TERMINATED: 'TERMINATED'
-}
-
 export default class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isShowRuleModal: false,
       activityInfo: {},
       records: [],
       luckDrawResult: {},
-      curShowBubbleIndex: 0, // 中奖纪录显示的索引
-      noActivity: false, //当前商家无活动
-      loadStatus: 0, //0 走原有逻辑 1 code500,展示兜底 2 接口崩了，展示兜底
       sectorMask: null, //zrender 动画对象 遮罩
       arrow: null, //zrender 动画对象 箭头
       btnStart: null, //zrender 动画对象 按钮
@@ -184,8 +172,6 @@ export default class Home extends Component {
       zr: null, //zrender对象
       setintervalId: null,
       activityVersion: null,
-      disabled: false,
-      isAnimating: false
     }
   }
 
@@ -209,31 +195,18 @@ export default class Home extends Component {
   }
   // 抽奖活动详细信息
   async fetchActivityInfo() {
-    // Loading.loading({ type: 'animation' })
     // let res = await getActivityInfo().catch(() => {
     //   Loading.hide()
     //   this.setState({ loadStatus: 2 })
     // })
-    // Loading.hide()
+    
     let res = data
-    if (res && res.code == 50028) {
-      // 接口code 50028 是当前商铺没有此活动
-      this.setState({ noActivity: true })
-    } else if (res && res.code == 0 && res.data) {
+    if (res && res.code == 0 && res.data) {
       // activityInfo.state 判断活动状态 未开始、进行中、已结束、奖励已发完 另 还有0次机会则toast仅提示一次 ‘抽奖次数已用完’
       let activityInfo = res.data
-      let { activityState, rewardOut, activityVersion, chanceCount, h5PromptWord, riskStatus } = activityInfo
-      console.log(activityInfo)
+      let {  activityVersion, chanceCount, } = activityInfo
+    
       if (chanceCount == 0) {
-        // 按钮置灰操作
-        this.disableBtnStart()
-      }
-      if (
-        activityState == activityStateMes.NOT_STARTED ||
-        activityState == activityStateMes.OVER ||
-        activityState == activityStateMes.TERMINATED ||
-        rewardOut
-      ) {
         // 按钮置灰操作
         this.disableBtnStart()
       }
@@ -241,17 +214,11 @@ export default class Home extends Component {
       setTimeout(() => {
         this.renderDataToZr(this.state.zr)
       }, 0);
-    } else if (res && res.code != 0) {
-      // 展示兜底页
-      console.log('失败逻辑1')
-      this.setState({ loadStatus: 1 })
-    }
+    } 
   }
   // 渲染后端返回的奖品图片
   renderDataToZr(zr) {
     let prizeInfos = this.state.activityInfo.prizeInfos || []
-    console.log(this.state.activityInfo.prizeInfos)
-
     prizeInfos.map((item, index) => {
       let windowWidth = document.body.offsetWidth
       let discWidth = windowWidth * 0.9
@@ -301,21 +268,12 @@ export default class Home extends Component {
       // })
 
       let res = luckData
-      // 接口code 50029：当前抽奖活动已结束
-      if (res && res.code == 50029) {
-        setTimeout(() => this.reRender(), 2000)
-        return
-      }
-      // 接口code 50028 是当前商铺没有此活动
-      if (res && res.code == 50028) {
-        this.setState({ noActivity: true })
-      } else if (res && res.code == 0 && res.data) {
+      if (res && res.code == 0 && res.data) {
         const luckDrawResult = res.data
         // 对比接口返回的中奖奖品 在 大盘上的索引，以得到大盘旋转停止的方位
         const prizeIndex = this.state.activityInfo.prizeInfos.findIndex(
           item => item.prizeSerialNum == luckDrawResult.prize.prizeSerialNum
         )
-        console.log(prizeIndex + '++++++')
         if (prizeIndex == -1) {
           return
         }
@@ -329,20 +287,11 @@ export default class Home extends Component {
   }
 
   render(){
-    const { luckDrawResult, activityInfo, loadStatus, isShowRuleModal } = this.state
+    const { activityInfo } = this.state
     // 后端返回的字符串处理展示出
     const h5ProptWord = (activityInfo.h5PromptWord || '').match(/(\D+)?(\d*)?(\D*)/)
     return(
       <div className='activityContainerWrapper'>
-        {this.state.noActivity && (
-          <div className='noActivity'>
-            {/* 两张图片建议Webp */}
-            <WebpContent isRenderImg url='https://static.yonghuivip.com/anniversary/activity_end@2x.png' />
-            <p>当前首页商家没有此活动</p>
-            <button onClick={this.goHomePage}>去逛逛</button> {/* 跳转主页 */}
-          </div>
-        )}
-
         <div className='' style={{ display: this.state.noActivity ? 'none' : 'block' }}>
           <WebpContent
             className='activityContainer'
@@ -372,13 +321,6 @@ export default class Home extends Component {
             </div>
           </WebpContent>
         </div>
-        {/* TODO:拆分为组件 */}
-        {/* <LotteryResult
-          history={this.props.history}
-          ref={this.onRef}
-          fetchActivityInfo={this.fetchActivityInfo.bind(this)}
-          luckDrawResult={luckDrawResult}
-        /> */}
       </div>
     )
   }
